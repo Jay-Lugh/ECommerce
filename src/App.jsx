@@ -22,19 +22,19 @@ function App(){
     <Header/>
       <Navigation isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
 
-      <div className="main-content"
+      <div className="mainContent"
       style={{
         marginLeft: isCollapsed ? '4%' : '10%',
-        padding: '20px',
         flexgrow: 1,
         transition: 'ease-in-out 0.5s'
       }} >
-
-      <Routes>
+        <div className="scrollContainer">
+        <Routes>
         <Route path="/" element={<Dashboard/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/productlist" element={<ProductList/>} />
       </Routes>
+        </div>
       </div>
     </BrowserRouter>
     </>
