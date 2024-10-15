@@ -6,10 +6,11 @@
     align-items: center;
     z-index: 100;
     background: #3A6D8C;
+    height: 10vh;
   }
   .logo img {
     border-radius: 5px 20px 5px;
-    width: 70px;
+    width: 60px;
   }
   .title {
     margin: 0 auto;
