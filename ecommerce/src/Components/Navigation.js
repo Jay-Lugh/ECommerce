@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from "../logo2.jpg";
+import logo from "../profile.png";
 import './Components.css'; 
 import { FaBars } from 'react-icons/fa';
 import { IoMdLogOut } from "react-icons/io";
