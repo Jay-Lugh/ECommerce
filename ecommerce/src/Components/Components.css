@@ -5,12 +5,13 @@
     display: flex;
     align-items: center;
     z-index: 100;
-    background: #3A6D8C;
+    background: #072644;
     height: 10vh;
+    color: white;
   }
   .logo img {
     border-radius: 5px 20px 5px;
-    width: 60px;
+    width: 50px;
   }
   .title {
     margin: 0 auto;
@@ -21,7 +22,7 @@
     width: 10vw;
     position: fixed;
     overflow-x: hidden;
-    background-color: #001F3F;
+    background-color:#022d58 ;
     padding-top: 20px;
     display: flex; 
     flex-direction: column;
@@ -49,10 +50,7 @@
     transition: opacity 0.5s;
   }
   
-  .sidebar.collapsed .navbar {
-    opacity: 0;
-  }
-  
+
   .sidebar.collapsed .toggle-button {
     display: block;
   }
