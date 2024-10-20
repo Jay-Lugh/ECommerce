@@ -15,7 +15,7 @@ const Navigation = ({ isCollapsed, toggleSidebar }) => {
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <Button onClick={toggleSidebar} className="burgerButton">
-      <FaBars />
+      <FaBars style={iconStyle}/>
       </Button>
       <Navbar bg="#343a40" variant='dark' className={`flex-column ${isCollapsed ? 'collapsed' : ''}`}>
         <Nav className="flex-column">
