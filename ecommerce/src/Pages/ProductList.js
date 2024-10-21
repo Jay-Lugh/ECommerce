@@ -77,7 +77,7 @@ function ProductList(props) {
                                 <td>{product.category}</td>
                                 <td>{product.description}</td>
                                 <td>{product.qty}</td>
-                                <td>${product.price}</td>
+                                <td>{product.price}</td>
                                 <td>{product.barcode}</td>
                                 <td>
                                     <Button variant="primary" onClick={() => handleEdit(product)} className="ms-2">Edit</Button>
