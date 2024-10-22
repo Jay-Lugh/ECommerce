@@ -79,16 +79,20 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.container h2{
+  text-align: center;
+}
 
 .container .button{
-  float: right;
-  background-color: transparent; 
+    background-color: transparent; 
     border: none; 
-    font-size: 40px; 
+    font-size: 30px; 
     color: #000; 
     cursor: pointer; 
     margin: 0;
     padding: 0;
+    width: 40px;
+    height: 40px;
 }
 .container{
   display: block;

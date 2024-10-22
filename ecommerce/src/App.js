@@ -52,9 +52,13 @@ function App() {
 
   return (
     <>
-      <Header />
+    
       {location.pathname !== '/' && (
-        <Navigation isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
+        <>
+          <Header />
+          <Navigation isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
+        </>
+        
       )}
 
       <div

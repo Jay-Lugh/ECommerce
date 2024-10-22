@@ -32,12 +32,12 @@ function Add() {
     return (
         <Container className="my-4" style={{ maxWidth: '500px' }}>
             <Button 
-                className="custom-button" 
+                className="button" 
                 onClick={handleBack} 
-                style={{ float: 'right', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem' }}
             >
                 <GiCancel />
             </Button>
+           
             <h2 className="mb-4">Add Item</h2>
             
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
