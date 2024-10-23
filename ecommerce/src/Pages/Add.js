@@ -105,7 +105,7 @@ function Add() {
                     <Form.Control 
                         type="number" 
                         placeholder='Product Quantity' 
-                        name="qtyy"
+                        name="qty"
                         value={formdata.qty}
                         onChange={handleChange}
                         required 
@@ -118,7 +118,7 @@ function Add() {
                 <Form.Group controlId="formPrice">
                     <Form.Label>Price:</Form.Label>
                     <Form.Control 
-                        type="text" 
+                        type="number" 
                         placeholder='Product Price' 
                         name="price"
                         value={formdata.price}
