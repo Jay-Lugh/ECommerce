@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Container } from 'react-bootstrap';
 
 const Login = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
     const [formdata, setFormdata] = useState({
         username: '',
@@ -18,9 +18,8 @@ const Login = () => {
             e.preventDefault();
             e.stopPropagation();
         } else {
-            // ADD CODE FOR LOGIN HERE
-            navigate('/productlist'); 
             console.log('Logging in with', formdata);
+            navigate('/productlist');
         }
         setValidated(true);
     };
@@ -34,9 +33,9 @@ const Login = () => {
     };
 
     return (
-        <Container className="my-4" style={{ maxWidth: '400px' }}>
-            <h2 className="mb-4">Login</h2>
-            
+        <Container className="my-4 login" style={{ maxWidth: '400px', margin: '25%' }}>
+            <h2 className="mb-4 text-center">Login</h2>
+
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username:</Form.Label>
@@ -47,6 +46,10 @@ const Login = () => {
                         value={formdata.username}
                         onChange={handleChange}
                         required
+                        style={{
+                            borderColor: validated && formdata.username ? 'initial' : '',
+                            boxShadow: validated && formdata.username ? 'none' : '',
+                        }}
                     />
                     <Form.Control.Feedback type="invalid">
                         Please provide a valid username.
@@ -62,6 +65,10 @@ const Login = () => {
                         value={formdata.password}
                         onChange={handleChange}
                         required
+                        style={{
+                            borderColor: validated && formdata.password ? 'initial' : '',
+                            boxShadow: validated && formdata.password ? 'none' : '',
+                        }}
                     />
                     <Form.Control.Feedback type="invalid">
                         Please provide a valid password.

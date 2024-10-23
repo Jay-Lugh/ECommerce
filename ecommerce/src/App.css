@@ -93,3 +93,7 @@
   color: #ff0000;
   background-color: transparent;
 }
+
+.login input {
+  background-image: none !important;
+}
