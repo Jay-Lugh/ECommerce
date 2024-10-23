@@ -75,7 +75,7 @@ function ProductList(props) {
                             <th>Qty</th>
                             <th>Price</th>
                             <th>Barcode</th>
-                            <th>Action</th> {/* Add Action column */}
+                            <th>Action</th> 
                         </tr>
                     </thead>
                     <tbody>
