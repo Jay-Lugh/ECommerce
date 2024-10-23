@@ -10,6 +10,7 @@ function Add() {
     const navigate = useNavigate(); 
 
     const [formdata, setFormdata] = useState({
+        barcode: '',
         name: '',
         category: '',
         description: '',
@@ -47,7 +48,7 @@ function Add() {
     };
 
     return (
-        <Container className="my-4" style={{ maxWidth: '500px' }}>
+        <Container className="my-4" style={{ maxWidth: '700px' }}>
             <Button className="button" onClick={handleBack}>
                 <GiCancel />
             </Button>
@@ -55,6 +56,21 @@ function Add() {
             <h2 className="mb-4">Add Item</h2>
             
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
+               <Form.Group controlId="formBarcode">
+                    <Form.Label>Barcode:</Form.Label>
+                    <Form.Control 
+                        type ="number" 
+                        placeholder='Product Barcode' 
+                        name="barcode"
+                        value={formdata.barcode}
+                        onChange={handleChange}
+                        required 
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        Please provide a valid barcode.
+                    </Form.Control.Feedback>
+                </Form.Group>
+
                 <Form.Group controlId="formName">
                     <Form.Label>Name:</Form.Label>
                     <Form.Control 

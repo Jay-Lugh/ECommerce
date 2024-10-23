@@ -12,6 +12,7 @@ function Edit() {
 
     const [validated, setValidated] = useState(false); 
     const [formdata, setFormData] = useState({
+        barcode:  purchase.barcode,
         name: purchase.name,
         category: purchase.category,
         description: purchase.description,
@@ -49,13 +50,29 @@ function Edit() {
     };
 
     return (
-        <Container className="container" style={{ maxWidth: '500px' }}>
+        <Container className="container" style={{ maxWidth: '700px' }}>
             <Button className="button" onClick={handleBack}>
                 <GiCancel />
             </Button>
             <h2>Edit Item</h2>
             
             <Form noValidate validated={validated} onSubmit={handleSubmit}> 
+
+               <Form.Group controlId="formBarcode">
+                    <Form.Label>Barcode:</Form.Label>
+                    <Form.Control 
+                        type ="number" 
+                        placeholder='Product Barcode' 
+                        name="barcode"
+                        value={formdata.barcode}
+                        readOnly
+                        style={{ backgroundColor: '#f8f9fa', cursor: 'not-allowed' }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        Please provide a valid barcode.
+                    </Form.Control.Feedback>
+                </Form.Group>
+
                 <Form.Group controlId="formName">
                     <Form.Label>Name:</Form.Label>
                     <Form.Control 

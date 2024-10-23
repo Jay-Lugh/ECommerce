@@ -69,24 +69,24 @@ function ProductList(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
+                           <th>Barcode</th>
                             <th>Name</th>
                             <th>Category</th>
                             <th>Description</th>
                             <th>Qty</th>
                             <th>Price</th>
-                            <th>Barcode</th>
                             <th>Action</th> 
                         </tr>
                     </thead>
                     <tbody>
                         {products.map(product => (
                             <tr key={product.barcode}>
+                                 <td>{product.barcode}</td>
                                 <td>{product.name}</td>
                                 <td>{product.category}</td>
                                 <td>{product.description}</td>
                                 <td>{product.qty}</td>
                                 <td>{product.price}</td>
-                                <td>{product.barcode}</td>
                                 <td>
                                     <Button variant="primary" onClick={() => handleEdit(product)} className="ms-2">Edit</Button>
                                     <Button variant="danger" onClick={() => handleDelete(product.barcode)} className="ms-2">Delete</Button>
