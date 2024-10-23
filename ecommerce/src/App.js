@@ -64,7 +64,7 @@ function App() {
       <div
         className="mainContent"
         style={{
-          marginLeft: isCollapsed ? '5%' : '10%',
+          marginLeft: isCollapsed ? '10%' : '15%',
           flexGrow: 1,
           transition: 'ease-in-out 0.5s'
         }}

@@ -1,100 +1,77 @@
-// src/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { Container } from 'react-bootstrap';
 
 const Login = () => {
     const navigate = useNavigate(); 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+    const [validated, setValidated] = useState(false);
+    const [formdata, setFormdata] = useState({
+        username: '',
+        password: '',
+    });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleSubmit = (e) => {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+        } else {
+            // ADD CODE FOR LOGIN HERE
+            navigate('/productlist'); 
+            console.log('Logging in with', formdata);
+        }
+        setValidated(true);
+    };
 
-    // Simple validation
-    if (!username || !password) {
-      setError('Please fill in all fields');
-      return;
-    }else{
-        handleBack();
-    }
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormdata({
+            ...formdata,
+            [name]: value,
+        });
+    };
 
-    // You can replace this with actual authentication logic
-    console.log('Logging in with', { username, password });
-    setError(''); // Clear error if login is successful
-  };
+    return (
+        <Container className="my-4" style={{ maxWidth: '400px' }}>
+            <h2 className="mb-4">Login</h2>
+            
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group controlId="formUsername">
+                    <Form.Label>Username:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder="Enter username"
+                        name="username"
+                        value={formdata.username}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        Please provide a valid username.
+                    </Form.Control.Feedback>
+                </Form.Group>
 
-  const handleBack = () => {
-    navigate('/dashboard'); 
-};
+                <Form.Group controlId="formPassword">
+                    <Form.Label>Password:</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Enter password"
+                        name="password"
+                        value={formdata.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        Please provide a valid password.
+                    </Form.Control.Feedback>
+                </Form.Group>
 
-
-  return (
-    <div style={styles.container}>
-      <h2>Login</h2>
-      <Form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-          <label htmlFor="username">Username:</label>
-          <Form.Control
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.inputGroup}>
-          <label htmlFor="password">Password:</label>
-          <Form.Control
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-          />
-        </div>
-        {error && <p style={styles.error}>{error}</p>}
-        <Button type="submit" style={styles.button}>Login</Button>
-      </Form>
-    </div>
-  );
-};
-
-const styles = {
-  container: {
-    maxWidth: '300px',
-    margin: '50px auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  inputGroup: {
-    marginBottom: '15px',
-  },
-  input: {
-    padding: '8px',
-    fontSize: '16px',
-  },
-  button: {
-    padding: '10px',
-    fontSize: '16px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  error: {
-    color: 'red',
-    fontSize: '14px',
-  },
+                <Button type="submit" className="mt-3">Login</Button>
+            </Form>
+        </Container>
+    );
 };
 
 export default Login;

@@ -11,7 +11,7 @@ function Edit() {
     const purchase = location.state;
 
     const [validated, setValidated] = useState(false); 
-    const [formData, setFormData] = useState({
+    const [formdata, setFormData] = useState({
         name: purchase.name,
         category: purchase.category,
         description: purchase.description,
@@ -35,13 +35,15 @@ function Edit() {
     };
 
     const confirmEdit = () => {
+         // ADD YOUR CODE FOR EDIT THE ITEM HERE THE DATA IS STORED IN FORMDATA
+        console.log('Editing item:', formdata);
         navigate('/productlist'); 
     };
 
     const handleChange = (event) => { 
         const { name, value } = event.target;
         setFormData({
-            ...formData,
+            ...formdata,
             [name]: value,
         });
     };
@@ -59,10 +61,10 @@ function Edit() {
                     <Form.Control 
                         type="text" 
                         placeholder='Product Name' 
-                        required 
-                        name="name" 
-                        value={formData.name} 
-                        onChange={handleChange} 
+                        value={formdata.name} 
+                        readOnly
+                        style={{ backgroundColor: '#f8f9fa', cursor: 'not-allowed' }}
+                        
                     />
                     <Form.Control.Feedback type="invalid">
                         Please provide a valid name.
@@ -74,10 +76,9 @@ function Edit() {
                     <Form.Control 
                         type="text" 
                         placeholder='Product Category' 
-                        required 
-                        name="category" 
-                        value={formData.category} 
-                        onChange={handleChange} 
+                        value={formdata.category} 
+                        readOnly
+                        style={{ backgroundColor: '#f8f9fa', cursor: 'not-allowed' }}
                     />
                     <Form.Control.Feedback type="invalid">
                         Please provide a valid category.
@@ -91,7 +92,7 @@ function Edit() {
                         placeholder='Product Description' 
                         required 
                         name="description" 
-                        value={formData.description} 
+                        value={formdata.description} 
                         onChange={handleChange} 
                     />
                     <Form.Control.Feedback type="invalid">
@@ -106,7 +107,7 @@ function Edit() {
                         placeholder='Product Quantity' 
                         required 
                         name="qty" 
-                        value={formData.qty} 
+                        value={formdata.qty} 
                         onChange={handleChange} 
                     />
                     <Form.Control.Feedback type="invalid">
@@ -121,7 +122,7 @@ function Edit() {
                         placeholder='Product Price' 
                         required 
                         name="price" 
-                        value={formData.price} 
+                        value={formdata.price} 
                         onChange={handleChange} 
                     />
                     <Form.Control.Feedback type="invalid">

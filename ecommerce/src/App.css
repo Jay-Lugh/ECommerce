@@ -53,20 +53,11 @@
 }
 
 .actions .addButton{
-  font-size: 40px; 
     border: none; 
-    padding: 0; 
+    padding: 10px; 
     width: auto;
     margin: 0;
     line-height: 0.5;
-    background-color: transparent;
-    color: #0d6efd;
-}
-
-.actions .addButton:hover{
-    background-color: transparent;
-    color: #1d0dfd;
-    
 }
 
 .container{

@@ -9,11 +9,19 @@ function Add() {
     const [validated, setValidated] = useState(false);
     const navigate = useNavigate(); 
 
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
+    const [formdata, setFormdata] = useState({
+        name: '',
+        category: '',
+        description: '',
+        qty: '',
+        price: '',
+    });
+
+    const handleSubmit = (e) => {
+        const form = e.currentTarget;
         if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
+            e.preventDefault();
+            e.stopPropagation();
         } else {
             confirmAdd(); 
         }
@@ -25,16 +33,22 @@ function Add() {
     };
 
     const confirmAdd = () => {
-        // ADD YOUR CODE FOR ADDING THE ITEM HERE
+        // ADD YOUR CODE FOR ADDING THE ITEM HERE THE DATA IS STORED IN FORMDATA
+        console.log('Adding item:', formdata);
         navigate('/productlist'); 
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormdata({
+            ...formdata,
+            [name]: value,
+        });
     };
 
     return (
         <Container className="my-4" style={{ maxWidth: '500px' }}>
-            <Button 
-                className="button" 
-                onClick={handleBack} 
-            >
+            <Button className="button" onClick={handleBack}>
                 <GiCancel />
             </Button>
            
@@ -46,6 +60,9 @@ function Add() {
                     <Form.Control 
                         type="text" 
                         placeholder='Product Name' 
+                        name="name"
+                        value={formdata.name}
+                        onChange={handleChange}
                         required 
                     />
                     <Form.Control.Feedback type="invalid">
@@ -58,6 +75,9 @@ function Add() {
                     <Form.Control 
                         type="text" 
                         placeholder='Product Category' 
+                        name="category"
+                        value={formdata.category}
+                        onChange={handleChange}
                         required 
                     />
                     <Form.Control.Feedback type="invalid">
@@ -70,6 +90,9 @@ function Add() {
                     <Form.Control 
                         as="textarea" 
                         placeholder='Product Description' 
+                        name="description"
+                        value={formdata.description}
+                        onChange={handleChange}
                         required 
                     />
                     <Form.Control.Feedback type="invalid">
@@ -82,6 +105,9 @@ function Add() {
                     <Form.Control 
                         type="number" 
                         placeholder='Product Quantity' 
+                        name="qtyy"
+                        value={formdata.qty}
+                        onChange={handleChange}
                         required 
                     />
                     <Form.Control.Feedback type="invalid">
@@ -94,6 +120,9 @@ function Add() {
                     <Form.Control 
                         type="text" 
                         placeholder='Product Price' 
+                        name="price"
+                        value={formdata.price}
+                        onChange={handleChange}
                         required 
                     />
                     <Form.Control.Feedback type="invalid">

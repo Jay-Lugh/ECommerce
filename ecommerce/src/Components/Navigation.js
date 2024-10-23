@@ -26,7 +26,7 @@ const Navigation = ({ isCollapsed, toggleSidebar }) => {
       <Navbar bg="#343a40" variant='dark' className={`flex-column ${isCollapsed ? 'collapsed' : ''}`}>
         <Nav className="flex-column">
          <Nav.Link as={Link} to="/profile"> {isCollapsed ? <CgProfile  style={iconStyle} /> : <img src={logo} alt="Logo"/>} </Nav.Link>
-          <Nav.Link as={Link} to="/dashboard">{isCollapsed ? <MdDashboard  style={iconStyle}/>: "Dashboard"}</Nav.Link>
+          {/* <Nav.Link as={Link} to="/dashboard">{isCollapsed ? <MdDashboard  style={iconStyle}/>: "Dashboard"}</Nav.Link> */}
           <Nav.Link as={Link} to="/productlist">{isCollapsed ? <IoBagHandleSharp  style={iconStyle}/> : "Product"}</Nav.Link>
           <Button onClick={handleBack} className="logoutButton">
           <IoMdLogOut />

@@ -13,6 +13,7 @@ function ProductList(props) {
     const navigate = useNavigate(); 
     const [showModal, setShowModal] = useState(false);
     const [selectedBarcode, setSelectedBarcode] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleAdd = () => {
         navigate(`/add`); 
@@ -28,29 +29,38 @@ function ProductList(props) {
 
     const confirmDelete = () => {
         console.log(`Deleted item with barcode: ${selectedBarcode}`);
-
         //ADD HERE THE CODE FOR DELETING
         setShowModal(false);
     
     };
 
+    const handleSearch = (e) => {
+        //ADD CODE FOR SEARCH
+        console.log('search is ' + searchTerm);
+        e.preventDefault(); 
+    };
+
+
     return (
         <>
             <div className="actions d-flex justify-content-center">
-                <Form inline>
+                <Form inline onSubmit={handleSearch}>
                     <Row className="align-items-center">
                         <Col xs="auto">
                             <Form.Control
                                 type="text"
                                 placeholder="Search"
                                 className="me-sm-2"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                
                             />
                         </Col>
                         <Col xs="auto">
                             <Button type="submit">Search</Button>
                         </Col>
                         <Col xs="auto">
-                            <Button type="submit" className="addButton"  onClick={() => handleAdd()}><MdOutlineAddCircleOutline /></Button>
+                            <Button type="submit"  onClick={() => handleAdd()}>Add Product <MdOutlineAddCircleOutline/> </Button>
                         </Col>
                     </Row>
                 </Form>
@@ -59,7 +69,6 @@ function ProductList(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Image</th>
                             <th>Name</th>
                             <th>Category</th>
                             <th>Description</th>
@@ -72,7 +81,6 @@ function ProductList(props) {
                     <tbody>
                         {products.map(product => (
                             <tr key={product.barcode}>
-                                <td><img src={product.image} alt={product.name} style={{ width: '50px' }} /></td>
                                 <td>{product.name}</td>
                                 <td>{product.category}</td>
                                 <td>{product.description}</td>
