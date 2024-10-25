@@ -97,3 +97,6 @@
 .login input {
   background-image: none !important;
 }
+.loginContainer{
+  margin-top: 10%;
+}

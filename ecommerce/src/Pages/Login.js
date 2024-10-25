@@ -33,7 +33,7 @@ const Login = () => {
     };
 
     return (
-        <Container className="my-4 login" style={{ maxWidth: '400px', margin: '25%' }}>
+        <Container className="my-4" style={{ maxWidth: '500px'}}>
             <h2 className="mb-4 text-center">Login</h2>
 
             <Form noValidate validated={validated} onSubmit={handleSubmit}>

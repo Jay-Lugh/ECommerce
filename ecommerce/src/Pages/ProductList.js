@@ -60,7 +60,7 @@ function ProductList(props) {
                             <Button type="submit">Search</Button>
                         </Col>
                         <Col xs="auto">
-                            <Button type="submit"  onClick={() => handleAdd()}>Add Product <MdOutlineAddCircleOutline/> </Button>
+                            <Button type="submit" onClick={() => handleAdd()}>Add Product <MdOutlineAddCircleOutline/> </Button>
                         </Col>
                     </Row>
                 </Form>
