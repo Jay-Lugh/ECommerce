@@ -4,59 +4,78 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
-    // GET /api/products - List all products
-    public function index()
+    // List all products
+    public function index(): JsonResponse
     {
-        return Product::all();
+        $products = Product::all();
+        return response()->json(['data' => $products], 200);
     }
 
-    // POST /api/products - Add a new product
-    public function store(Request $request)
+    // Add a new product
+    public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'barcode' => 'required|unique:products',
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'category' => 'nullable|string',
+        $validatedData = $request->validate([
+            'barcode' => 'required|unique:products|max:255',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $product = Product::create($request->all());
-        return response()->json($product, 201);
+        $product = Product::create($validatedData);
+        return response()->json(['message' => 'Product created successfully', 'data' => $product], 201);
     }
 
-    // GET /api/products/{id} - Get details of a single product
-    public function show($id)
+    // Get details of a single product
+    public function show(int $id): JsonResponse
     {
-        return Product::findOrFail($id);
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        return response()->json(['data' => $product], 200);
     }
 
-    // PUT /api/products/{id} - Update a product
-    public function update(Request $request, $id)
+    // Update a product
+    public function update(Request $request, int $id): JsonResponse
     {
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
 
-        $request->validate([
-            'barcode' => 'sometimes|required|unique:products,barcode,' . $product->id,
-            'name' => 'sometimes|required',
-            'price' => 'sometimes|required|numeric',
-            'stock' => 'sometimes|required|integer',
-            'category' => 'nullable|string',
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        $validatedData = $request->validate([
+            'barcode' => 'sometimes|required|unique:products,barcode,' . $id . '|max:255',
+            'name' => 'sometimes|required|string|max:255',
+            'price' => 'sometimes|required|numeric|min:0',
+            'stock' => 'sometimes|required|integer|min:0',
+            'category' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $product->update($request->all());
-        return response()->json($product, 200);
+        $product->update($validatedData);
+        return response()->json(['message' => 'Product updated successfully', 'data' => $product], 200);
     }
 
-    // DELETE /api/products/{id} - Delete a product
-    public function destroy($id)
+    // Delete a product
+    public function destroy(int $id): JsonResponse
     {
-        Product::destroy($id);
-        return response()->json(null, 204);
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        $product->delete();
+        return response()->json(['message' => 'Product deleted successfully'], 200);
     }
 }
