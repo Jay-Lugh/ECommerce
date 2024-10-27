@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import Container from 'react-bootstrap/Container'; 
+import axios from 'axios'; // Import Axios
 
 function Add() {
     const [validated, setValidated] = useState(false);
@@ -14,31 +15,40 @@ function Add() {
         name: '',
         category: '',
         description: '',
-        qty: '',
+        stock: '',
         price: '',
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         const form = e.currentTarget;
+        e.preventDefault(); // Prevent the default form submission behavior
+    
         if (form.checkValidity() === false) {
-            e.preventDefault();
             e.stopPropagation();
         } else {
-            confirmAdd(); 
+            console.log('Form data being submitted:', formdata); // Debug log
+            await confirmAdd(); // Call confirmAdd
         }
         setValidated(true);
-    };    
+    }; 
 
-    const handleBack = () => {
-        navigate('/productlist'); 
+    const confirmAdd = async () => {
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/products', formdata, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Product added:', response.data);
+            navigate('/productlist');
+        } catch (error) {
+            console.error('Error adding product:', error);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+            }
+        }
     };
-
-    const confirmAdd = () => {
-        // ADD YOUR CODE FOR ADDING THE ITEM HERE THE DATA IS STORED IN FORMDATA
-        console.log('Adding item:', formdata);
-        navigate('/productlist'); 
-    };
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormdata({
@@ -47,6 +57,9 @@ function Add() {
         });
     };
 
+    const handleBack = () => {
+        navigate('/productlist'); 
+    };
     return (
         <Container className="my-4" style={{ maxWidth: '700px' }}>
             <Button className="button" onClick={handleBack}>
@@ -56,10 +69,10 @@ function Add() {
             <h2 className="mb-4">Add Item</h2>
             
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
-               <Form.Group controlId="formBarcode">
+                <Form.Group controlId="formBarcode">
                     <Form.Label>Barcode:</Form.Label>
                     <Form.Control 
-                        type ="number" 
+                        type="number" 
                         placeholder='Product Barcode' 
                         name="barcode"
                         value={formdata.barcode}
@@ -121,8 +134,8 @@ function Add() {
                     <Form.Control 
                         type="number" 
                         placeholder='Product Quantity' 
-                        name="qty"
-                        value={formdata.qty}
+                        name="stock"
+                        value={formdata.stock}
                         onChange={handleChange}
                         required 
                     />

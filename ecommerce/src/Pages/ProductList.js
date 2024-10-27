@@ -6,10 +6,13 @@ import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom'; 
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import Delete from './DeletePrompt';
-import React, { useState } from 'react'; 
+import React, { useEffect, useState } from 'react'; 
+import axios from 'axios';
 
-function ProductList(props) {
-    const products = props.items; 
+function ProductList() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const navigate = useNavigate(); 
     const [showModal, setShowModal] = useState(false);
     const [selectedBarcode, setSelectedBarcode] = useState(null);
@@ -18,6 +21,7 @@ function ProductList(props) {
     const handleAdd = () => {
         navigate(`/add`); 
     };
+
     const handleEdit = (product) => {
         navigate(`/edit/${product.barcode}`, { state: product });
     };
@@ -27,19 +31,47 @@ function ProductList(props) {
         setShowModal(true); 
     };
 
-    const confirmDelete = () => {
-        console.log(`Deleted item with barcode: ${selectedBarcode}`);
-        //ADD HERE THE CODE FOR DELETING
-        setShowModal(false);
-    
+    const confirmDelete = async () => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/products/${selectedBarcode}`);
+            // Update local state to remove the deleted product
+            setProducts(products.filter(product => product.barcode !== selectedBarcode));
+            setShowModal(false);
+        } catch (err) {
+            setError('Failed to delete product');
+            console.error(err);
+        }
     };
 
-    const handleSearch = (e) => {
-        //ADD CODE FOR SEARCH
-        console.log('search is ' + searchTerm);
+    const handleSearch = async (e) => {
         e.preventDefault(); 
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/products?search=${searchTerm}`);
+            setProducts(response.data.data); // Adjust based on your API response structure
+        } catch (err) {
+            setError('Failed to fetch products');
+            console.error(err);
+        }
     };
 
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/products');
+                setProducts(response.data.data); // Adjust based on your API response structure
+            } catch (err) {
+                setError('Failed to fetch products');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
 
     return (
         <>
@@ -53,14 +85,13 @@ function ProductList(props) {
                                 className="me-sm-2"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                
                             />
                         </Col>
                         <Col xs="auto">
                             <Button type="submit">Search</Button>
                         </Col>
                         <Col xs="auto">
-                            <Button type="submit" onClick={() => handleAdd()}>Add Product <MdOutlineAddCircleOutline/> </Button>
+                            <Button onClick={handleAdd}>Add Product <MdOutlineAddCircleOutline/> </Button>
                         </Col>
                     </Row>
                 </Form>

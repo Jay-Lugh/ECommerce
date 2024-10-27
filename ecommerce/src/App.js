@@ -17,8 +17,6 @@ function App() {
     setIsCollapsed(!isCollapsed);
   };
 
-  // Example recent purchases data
-  const recentPurchases = [];
 
   const location = useLocation(); 
 
@@ -38,9 +36,8 @@ function App() {
           >
             <div className="scrollContainer">
               <Routes>
-                <Route path="/dashboard" element={<Dashboard items={recentPurchases} />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/productlist" element={<ProductList items={recentPurchases} />} />
+                <Route path="/productlist" element={<ProductList />} />
                 <Route path="/edit/:barcode" element={<Edit />} />
                 <Route path="/add" element={<Add />} />
                 <Route path="/" element={<Login />} />
