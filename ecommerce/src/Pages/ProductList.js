@@ -6,59 +6,62 @@ import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom'; 
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import Delete from './DeletePrompt';
-import React, { useEffect, useState } from 'react'; 
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'; 
+import axios from "axios";
 
 function ProductList() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
     const navigate = useNavigate(); 
     const [showModal, setShowModal] = useState(false);
-    const [selectedBarcode, setSelectedBarcode] = useState(null);
+
+    const [selectedid, setSelectedId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [products, setProducts] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const handleAdd = () => {
         navigate(`/add`); 
     };
-
     const handleEdit = (product) => {
-        navigate(`/edit/${product.barcode}`, { state: product });
+        navigate(`/edit/${product.id}`, { state: product });
     };
 
-    const handleDelete = (barcode) => {
-        setSelectedBarcode(barcode);
+
+    //DELETE
+    const handleDelete = (id) => {
+        setSelectedId(id);
         setShowModal(true); 
     };
 
     const confirmDelete = async () => {
+        console.log(`Deleted item with barcode: ${selectedid}`);
+        //ADD HERE THE CODE FOR DELETING
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/products/${selectedBarcode}`);
-            // Update local state to remove the deleted product
-            setProducts(products.filter(product => product.barcode !== selectedBarcode));
-            setShowModal(false);
-        } catch (err) {
-            setError('Failed to delete product');
-            console.error(err);
-        }
+            await axios.delete(`http://127.0.0.1:8000/api/products/${selectedid}`);
+            setProducts(products.filter(product => product.id !== selectedid)); 
+            console.log('Successfully Deleted!');
+          } catch (error) {
+            console.log('Failed to delete product :(');
+          }
+        setShowModal(false);
+    
     };
 
-    const handleSearch = async (e) => {
+    //SEARCH
+    const handleSearch = (e) => {
+        //ADD CODE FOR SEARCH
+        console.log('search is ' + searchTerm);
         e.preventDefault(); 
-        try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/products?search=${searchTerm}`);
-            setProducts(response.data.data); // Adjust based on your API response structure
-        } catch (err) {
-            setError('Failed to fetch products');
-            console.error(err);
-        }
     };
 
+
+    //Show the list of products
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/products');
-                setProducts(response.data.data); // Adjust based on your API response structure
+                setProducts(response.data.data); 
             } catch (err) {
                 setError('Failed to fetch products');
                 console.error(err);
@@ -66,12 +69,21 @@ function ProductList() {
                 setLoading(false);
             }
         };
-
+    
         fetchProducts();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+
+
+
+
+    if (loading) {
+        return <div className="loadingScreen">Loading...</div>;
+      }
+    
+      if (error) {
+        return <div className="errorScreen">{error}</div>;
+      }
 
     return (
         <>
@@ -85,13 +97,14 @@ function ProductList() {
                                 className="me-sm-2"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
+                                
                             />
                         </Col>
                         <Col xs="auto">
                             <Button type="submit">Search</Button>
                         </Col>
                         <Col xs="auto">
-                            <Button onClick={handleAdd}>Add Product <MdOutlineAddCircleOutline/> </Button>
+                            <Button type="submit" onClick={() => handleAdd()}>Add Product <MdOutlineAddCircleOutline/> </Button>
                         </Col>
                     </Row>
                 </Form>
@@ -100,6 +113,7 @@ function ProductList() {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
+                            <th>ID</th>
                            <th>Barcode</th>
                             <th>Name</th>
                             <th>Category</th>
@@ -111,16 +125,17 @@ function ProductList() {
                     </thead>
                     <tbody>
                         {products.map(product => (
-                            <tr key={product.barcode}>
+                            <tr key={product.id}>
+                                <td>{product.id}</td>
                                  <td>{product.barcode}</td>
                                 <td>{product.name}</td>
                                 <td>{product.category}</td>
                                 <td>{product.description}</td>
-                                <td>{product.qty}</td>
+                                <td>{product.stock}</td>
                                 <td>{product.price}</td>
                                 <td>
                                     <Button variant="primary" onClick={() => handleEdit(product)} className="ms-2">Edit</Button>
-                                    <Button variant="danger" onClick={() => handleDelete(product.barcode)} className="ms-2">Delete</Button>
+                                    <Button variant="danger" onClick={() => handleDelete(product.id)} className="ms-2">Delete</Button>
                                 </td>
                             </tr>
                         ))}

@@ -4,55 +4,49 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import Container from 'react-bootstrap/Container'; 
-import axios from 'axios'; // Import Axios
+import axios from "axios";
 
 function Add() {
     const [validated, setValidated] = useState(false);
     const navigate = useNavigate(); 
 
-    const [formdata, setFormdata] = useState({
-        barcode: '',
-        name: '',
-        category: '',
-        description: '',
-        stock: '',
-        price: '',
+    const [product, setProduct] = useState({
+        barcode: "",
+        name: "",
+        price: "",
+        stock: "",
+        category: "",
+        description: ""
     });
 
     const handleSubmit = async (e) => {
-        const form = e.currentTarget;
-        e.preventDefault(); // Prevent the default form submission behavior
-    
+        const form = e.currentTarget; // Get the form element
         if (form.checkValidity() === false) {
+            e.preventDefault();
             e.stopPropagation();
         } else {
-            console.log('Form data being submitted:', formdata); // Debug log
-            await confirmAdd(); // Call confirmAdd
+            await confirmAdd(); 
         }
-        setValidated(true);
-    }; 
+        setValidated(true); // Set validated state after submission
+    };    
 
     const confirmAdd = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/products', formdata, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            console.log('Product added:', response.data);
-            navigate('/productlist');
+            console.log('Adding item:', product); 
+            await axios.post('http://127.0.0.1:8000/api/products', product);
+            alert('Product added successfully!'); 
+            navigate('/productlist'); 
         } catch (error) {
-            console.error('Error adding product:', error);
-            if (error.response) {
-                console.error('Response data:', error.response.data);
-            }
+            console.error('Failed to save product', error);
+            alert('Failed to save product. Please try again.');
         }
     };
-    
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormdata({
-            ...formdata,
+        setProduct({
+            ...product,
             [name]: value,
         });
     };
@@ -60,6 +54,7 @@ function Add() {
     const handleBack = () => {
         navigate('/productlist'); 
     };
+
     return (
         <Container className="my-4" style={{ maxWidth: '700px' }}>
             <Button className="button" onClick={handleBack}>
@@ -72,10 +67,10 @@ function Add() {
                 <Form.Group controlId="formBarcode">
                     <Form.Label>Barcode:</Form.Label>
                     <Form.Control 
-                        type="number" 
+                        type="text" 
                         placeholder='Product Barcode' 
                         name="barcode"
-                        value={formdata.barcode}
+                        value={product.barcode}
                         onChange={handleChange}
                         required 
                     />
@@ -90,7 +85,7 @@ function Add() {
                         type="text" 
                         placeholder='Product Name' 
                         name="name"
-                        value={formdata.name}
+                        value={product.name}
                         onChange={handleChange}
                         required 
                     />
@@ -105,7 +100,7 @@ function Add() {
                         type="text" 
                         placeholder='Product Category' 
                         name="category"
-                        value={formdata.category}
+                        value={product.category}
                         onChange={handleChange}
                         required 
                     />
@@ -120,7 +115,7 @@ function Add() {
                         as="textarea" 
                         placeholder='Product Description' 
                         name="description"
-                        value={formdata.description}
+                        value={product.description}
                         onChange={handleChange}
                         required 
                     />
@@ -135,7 +130,7 @@ function Add() {
                         type="number" 
                         placeholder='Product Quantity' 
                         name="stock"
-                        value={formdata.stock}
+                        value={product.stock}
                         onChange={handleChange}
                         required 
                     />
@@ -150,7 +145,7 @@ function Add() {
                         type="number" 
                         placeholder='Product Price' 
                         name="price"
-                        value={formdata.price}
+                        value={product.price}
                         onChange={handleChange}
                         required 
                     />

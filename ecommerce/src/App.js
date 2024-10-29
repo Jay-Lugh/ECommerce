@@ -2,7 +2,6 @@ import './App.css';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import Header from './Components/Header';
-import Dashboard from './Pages/Dashboard';
 import Profile from './Pages/Profile';
 import ProductList from './Pages/ProductList';
 import Navigation from './Components/Navigation';
@@ -17,6 +16,7 @@ function App() {
     setIsCollapsed(!isCollapsed);
   };
 
+  // Example recent purchases data
 
   const location = useLocation(); 
 
@@ -29,7 +29,8 @@ function App() {
           <div
             className="mainContent"
             style={{
-              marginLeft: isCollapsed ? '10%' : '15%',
+              marginLeft: isCollapsed ? '8%' : '11%',
+              marginRight: isCollapsed ? '3%' : '1%',
               flexGrow: 1,
               transition: 'ease-in-out 0.5s'
             }}
@@ -38,7 +39,7 @@ function App() {
               <Routes>
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/productlist" element={<ProductList />} />
-                <Route path="/edit/:barcode" element={<Edit />} />
+                <Route path="/edit/:id" element={<Edit />} />
                 <Route path="/add" element={<Add />} />
                 <Route path="/" element={<Login />} />
               </Routes>
