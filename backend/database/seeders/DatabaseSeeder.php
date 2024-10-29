@@ -13,12 +13,6 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
+    { $this->call(ProductSeeder::class);
     }
 }

@@ -17,25 +17,30 @@ class ProductController extends Controller
     }
 
     // Add a new product
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'barcode' => 'required|unique:products|max:255',
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'category' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
-        $product = Product::create($validatedData);
-        return response()->json(['message' => 'Product created successfully', 'data' => $product], 201);
+        try {
+            $validatedData = $request->validate([
+                'barcode' => 'required|unique|max:255',
+                'name' => 'required|string|max:255',
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'category' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+            ]);
+    
+            $product = Product::create($validatedData->all());
+            return response()->json(['message' => 'Product created successfully', 'data' => $product], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
+        }
     }
+    
 
     // Get details of a single product
     public function show(int $id): JsonResponse
     {
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
 
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
@@ -47,17 +52,17 @@ class ProductController extends Controller
     // Update a product
     public function update(Request $request, int $id): JsonResponse
     {
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
 
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
 
         $validatedData = $request->validate([
-            'barcode' => 'sometimes|required|unique:products,barcode,' . $id . '|max:255',
-            'name' => 'sometimes|required|string|max:255',
-            'price' => 'sometimes|required|numeric|min:0',
-            'stock' => 'sometimes|required|integer|min:0',
+            'barcode' => 'required|unique:products,barcode,' . $id . '|max:255',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
             'category' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
@@ -69,7 +74,7 @@ class ProductController extends Controller
     // Delete a product
     public function destroy(int $id): JsonResponse
     {
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
 
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
