@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GiCancel } from "react-icons/gi";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 
@@ -22,39 +22,45 @@ function Edit() {
         price: '',
     });
 
+    const isMounted = useRef(false);
+
     useEffect(() => {
-        if (purchase) {
-          setProduct(purchase)
-        } else {
-            console.error("No product data available");
-            navigate('/productlist'); // Redirect if there's no product data
+        if (!isMounted.current) {
+            if (purchase) {
+                console.log("This is product data", purchase);
+                setProduct(purchase);
+            } else {
+                console.error("No product data available", purchase);
+                navigate('/productlist');
+            }
+            isMounted.current = true;
         }
     }, [purchase, navigate]);
-
-    const handleSubmit = async (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else {
-            await confirmEdit();
-        }
-        setValidated(true);
-    };
 
     const handleBack = () => {
         navigate('/productlist');
     };
 
-    const confirmEdit = async () => {
+    const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+    event.preventDefault(); 
+
+    // Validate the form
+    if (form.checkValidity() === false) {
+        event.stopPropagation(); 
+    } else {
         try {
-            await axios.put(`http://127.0.0.1:8000/api/products/${product.id}`, product);
             console.log('Editing item:', product);
-            navigate('/productlist');
+            const response = await axios.put(`http://127.0.0.1:8000/api/products/${product.id}`, product);
+            console.log('Edit successful:', response.data);
+            navigate('/productlist'); 
         } catch (error) {
             console.error('There was an error editing the item!', error);
         }
-    };
+    }
+    
+    setValidated(true); 
+};
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -69,7 +75,7 @@ function Edit() {
             <Button className="button" onClick={handleBack}>
                 <GiCancel />
             </Button>
-            <h2>Edit Item {purchase.id}</h2>
+            <h2>Edit Item</h2>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formBarcode">
                     <Form.Label>Barcode:</Form.Label>
